@@ -37,14 +37,11 @@ type cookieStore struct {
 // if decoding fails (e.g. HMAC validation fails or the named cookie doesn't exist).
 func (cs *cookieStore) Get(r *http.Request) ([]byte, error) {
 	// Retrieve the cookie from the request
-	cookie, err := r.Cookie(cs.name)
-	if err != nil {
-		return nil, err
-	}
+	cookie := r.Header.Get(cs.name)
 
 	token := make([]byte, tokenLength)
 	// Decode the HMAC authenticated cookie.
-	err = cs.sc.Decode(cs.name, cookie.Value, &token)
+	err := cs.sc.Decode(cs.name, cookie, &token)
 	if err != nil {
 		return nil, err
 	}
