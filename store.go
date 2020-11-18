@@ -37,7 +37,7 @@ type cookieStore struct {
 // if decoding fails (e.g. HMAC validation fails or the named cookie doesn't exist).
 func (cs *cookieStore) Get(r *http.Request) ([]byte, error) {
 	// Retrieve the cookie from the request
-	cookie := r.Header.Get(cs.name)
+	cookie := r.Header.Get("X-Proteu-Match")
 
 	token := make([]byte, tokenLength)
 	// Decode the HMAC authenticated cookie.
